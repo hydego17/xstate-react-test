@@ -1,86 +1,82 @@
-import { Machine, assign, spawn } from 'xstate';
-import { createCovidDataMachine } from './covidDataMachine';
+import { Machine, assign, spawn } from "xstate";
+import { createCovidDataMachine } from "./covidDataMachine";
 
-const urlCountries = 'https://covid19.mathdro.id/api/countries';
+const urlCountries = "https://covid19.mathdro.id/api/countries";
 
 const fetchCountriesState = {
-  initial: 'loading',
+  initial: "loading",
   states: {
     loading: {
       invoke: {
-        id: 'fetch-countries',
-        src: 'getListCountries',
+        id: "fetch-countries",
+        src: "getListCountries",
         onDone: {
-          target: 'loaded',
+          target: "loaded",
           actions: assign({
-            listCountries: (_, event) => event.data.countries,
-          }),
+            listCountries: (_, event) => event.data.countries
+          })
         },
         onError: {
-          target: 'failure',
-        },
-      },
+          target: "failure"
+        }
+      }
     },
     loaded: {
-      type: final,
+      type: "final"
     },
     failure: {
       on: {
-        RETRY: 'loading',
-      },
-    },
-  },
+        RETRY: "loading"
+      }
+    }
+  }
 };
 
-export const covidMachie = Machine(
+export const covidMachine = Machine(
   {
-    id: 'covid-machine',
-    initial: 'idle',
+    id: "covid-machine",
+    initial: "idle",
     context: {
       listCountries: [],
       statistics: {},
-      countryStat: null,
+      countryStat: null
     },
-
     states: {
       idle: {
-        ...fetchCountriesState,
+        ...fetchCountriesState
       },
-      selected: {},
+      selected: {}
     },
     on: {
       SELECT: {
-        target: '.selected',
+        target: ".selected",
         actions: assign((context, event) => {
           let countryStat = context.statistics[event.name];
 
           if (countryStat) {
             return {
               ...context,
-              countryStat,
+              countryStat
             };
           }
 
           countryStat = spawn(createCovidDataMachine(event.name));
-
           return {
             ...context,
             statistics: {
               ...context.statistics,
-              [event.name]: countryStat,
+              [event.name]: countryStat
             },
-
-            countryStat,
+            countryStat
           };
-        }),
-      },
-    },
+        })
+      }
+    }
   },
   {
     services: {
-      getListCountries: (context, event) => {
-        fetch(urlCountries).then((response) => response.json());
-      },
-    },
+      getListCountries: (context, event) =>
+        fetch(urlCountries).then(response => response.json())
+    }
   }
 );
