@@ -31,7 +31,7 @@ export default function Indicator() {
         </Code>
       </Box>
 
-      <StatGroup my={2} p={4} bg="gray.100" w={300} rounded="lg">
+      <StatGroup my={2} p={2} bg="gray.100" w={300} rounded="lg">
         <Stat>
           <StatLabel py={2}>Confirmed</StatLabel>
           <StatNumber py={2}>
@@ -40,7 +40,7 @@ export default function Indicator() {
         </Stat>
       </StatGroup>
 
-      <StatGroup my={2} p={4} bg="gray.100" w={300} rounded="lg">
+      <StatGroup my={2} p={2} bg="gray.100" w={300} rounded="lg">
         <Stat>
           <StatLabel py={2}>Deaths</StatLabel>
           <StatNumber py={2}>
@@ -49,7 +49,7 @@ export default function Indicator() {
         </Stat>
       </StatGroup>
 
-      <StatGroup my={2} p={4} bg="gray.100" w={300} rounded="lg">
+      <StatGroup my={2} p={2} bg="gray.100" w={300} rounded="lg">
         <Stat>
           <StatLabel py={2}>Recovered</StatLabel>
           <StatNumber py={2}>
