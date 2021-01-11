@@ -13,7 +13,7 @@ const fetchCountriesState = {
         onDone: {
           target: "loaded",
           actions: assign({
-            listCountries: (_, event) => event.data.countries
+            listCountries: (_context, event) => event.data.countries
           })
         },
         onError: {
@@ -75,7 +75,7 @@ export const covidMachine = Machine(
   },
   {
     services: {
-      getListCountries: (context, event) =>
+      getListCountries: (_context, _event) =>
         fetch(urlCountries).then(response => response.json())
     }
   }

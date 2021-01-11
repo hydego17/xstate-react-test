@@ -22,7 +22,7 @@ export const createCovidDataMachine = country =>
         confirmed: null,
         deaths: null,
         recovered: null,
-        lastUpdated: null
+        lastUpdate: null
       },
       states: {
         loading: {
@@ -32,10 +32,10 @@ export const createCovidDataMachine = country =>
             onDone: {
               target: "loaded",
               actions: assign({
-                confirmed: (context, event) => event.data.confirmed.value,
-                deaths: (context, event) => event.data.deaths.value,
-                recovered: (context, event) => event.data.recovered.value,
-                lastUpdated: () => Date.now()
+                confirmed: (_context, event) => event.data.confirmed.value,
+                deaths: (_context, event) => event.data.deaths.value,
+                recovered: (_context, event) => event.data.recovered.value,
+                lastUpdate: (_context, event) => event.data.lastUpdate
               })
             },
             onError: {
@@ -55,7 +55,7 @@ export const createCovidDataMachine = country =>
     },
     {
       services: {
-        getStatistics: (context, event) =>
+        getStatistics: (context, _event) =>
           invokeFetchStatistics(context.country)
       }
     }
