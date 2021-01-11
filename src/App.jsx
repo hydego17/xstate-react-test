@@ -4,6 +4,8 @@ import { Switch, Route } from 'react-router-dom';
 import { Box, Container, Flex, Heading, Text } from '@chakra-ui/react';
 
 import CovidPage from './pages/covid-19';
+import TodosPage from './pages/todos';
+
 import NavLink from './components/NavLink';
 
 function App() {
@@ -23,6 +25,9 @@ function App() {
         <Switch>
           <Route path="/covid-19">
             <CovidPage />
+          </Route>
+          <Route path="/todos">
+            <TodosPage />
           </Route>
         </Switch>
       </Container>
