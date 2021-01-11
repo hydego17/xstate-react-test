@@ -1,1 +1,3 @@
-## XState Covid-19 Stats
+## XState React practice
+- covid-19 stats
+- todos
