@@ -1,6 +1,15 @@
 import React from 'react';
 import { useMachine } from '@xstate/react';
-import { Box, Text, Input } from '@chakra-ui/react';
+import {
+  Box,
+  Text,
+  Input,
+  Button,
+  Switch,
+  Stack,
+  Flex,
+  HStack,
+} from '@chakra-ui/react';
 
 import { todosMachine } from '../../machine/todos/todosMachine';
 
@@ -52,10 +61,18 @@ export default function TodosPage() {
 
   // Filtered todos (to be rendered)
   const filteredTodos = filterTodos(filter, todos);
+  const isEmpty = filteredTodos.length === 0;
+
+  const numActiveTodos = todos.filter((todo) => !todo.completed).length;
+  const allCompleted = todos.length > 0 && numActiveTodos === 0;
+
+  // Mark todos
+  const mark = !allCompleted ? 'completed' : 'active';
+  const markEvent = `MARK.${mark}`;
 
   return (
     <PageContainer title="todos">
-      <Box py={4} w={400}>
+      <Box py={4} w={['80%', '70%']}>
         {/* Input Todo */}
         <Input
           type="text"
@@ -71,24 +88,50 @@ export default function TodosPage() {
           placeholder="What needs to be done?"
           autoFocus
         />
-
-        {/* Toggle Complete button */}
       </Box>
 
+      {/* Toggle Complete/Active button */}
+      {!isEmpty && (
+        <Stack direction="row" py={4}>
+          <Text>Mark all as {mark}</Text>
+          <Switch onChange={(e) => send(markEvent)} isChecked={allCompleted} />
+        </Stack>
+      )}
+
       {/* Render Todos */}
-      <Box>
+      <Box border="1px solid #ededed" px={4} rounded="lg">
         {filteredTodos.map((todo) => (
           <Todo key={todo.id} todoRef={todo.ref} />
         ))}
       </Box>
 
-      {filteredTodos.length > 0 && (
-        <Box py={6}>
-          <Text fontSize="xs" color="gray.600">
-            Click to edit todo
+      {!isEmpty && (
+        <Stack spacing={6} direction="row" align="center" py={6}>
+          <Text fontSize="sm">
+            {numActiveTodos} item{numActiveTodos === 1 ? '' : 's'} left
           </Text>
-        </Box>
+
+          <HStack spacing={1}>
+            <Button size="xs">All</Button>
+            <Button size="xs">Active</Button>
+            <Button size="xs">Completed</Button>
+          </HStack>
+
+          {numActiveTodos < todos.length && (
+            <Button size="xs" onClick={(_) => send('CLEAR_COMPLETED')}>
+              Clear completed
+            </Button>
+          )}
+        </Stack>
       )}
+
+      <Box py={6}>
+        <Text fontSize="xs" color="gray.600">
+          {filteredTodos.length > 0
+            ? 'Click to edit todo'
+            : 'Press Enter to input todo'}
+        </Text>
+      </Box>
     </PageContainer>
   );
 }

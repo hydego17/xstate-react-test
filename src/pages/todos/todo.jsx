@@ -25,12 +25,12 @@ export function Todo({ todoRef }) {
 
   return (
     <>
-      <Box my={2}>
+      <Box my={2} py={2}>
         <Stack
           spacing={5}
           direction="row"
           align="center"
-          width={400}
+          w={400}
           position="relative"
         >
           <Checkbox
@@ -53,6 +53,7 @@ export function Todo({ todoRef }) {
                 }
               }}
               ref={inputRef}
+              w="full"
             />
             <EditablePreview />
           </Editable>
@@ -66,7 +67,6 @@ export function Todo({ todoRef }) {
           />
         </Stack>
       </Box>
-  
     </>
   );
 }
