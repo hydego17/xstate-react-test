@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useMachine } from '@xstate/react';
 import {
   Box,
@@ -7,10 +7,10 @@ import {
   Button,
   Switch,
   Stack,
-  Flex,
   HStack,
 } from '@chakra-ui/react';
 
+import { useHashChange } from './useHashChange';
 import { todosMachine } from '../../machine/todos/todosMachine';
 
 import { Todo } from './todo';
@@ -57,6 +57,16 @@ const persistedTodosMachine = todosMachine.withConfig(
 export default function TodosPage() {
   const [state, send] = useMachine(persistedTodosMachine, { devTools: true });
 
+  useHashChange(() => {
+    send({ type: 'SHOW', filter: window.location.hash.slice(2) || 'all' });
+  });
+
+  // Capture initial state of browser hash
+  useEffect(() => {
+    window.location.hash.slice(2) &&
+      send({ type: 'SHOW', filter: window.location.hash.slice(2) });
+  }, [send]);
+
   const { todos, todo, filter } = state.context;
 
   // Filtered todos (to be rendered)
@@ -72,7 +82,7 @@ export default function TodosPage() {
 
   return (
     <PageContainer title="todos">
-      <Box py={4} w={['80%', '70%']}>
+      <Box py={4} w="80%">
         {/* Input Todo */}
         <Input
           type="text"
@@ -99,30 +109,34 @@ export default function TodosPage() {
       )}
 
       {/* Render Todos */}
-      <Box border="1px solid #ededed" px={4} rounded="lg">
+      <Box border="1px solid #ededed" rounded="lg">
         {filteredTodos.map((todo) => (
           <Todo key={todo.id} todoRef={todo.ref} />
         ))}
       </Box>
 
-      {!isEmpty && (
-        <Stack spacing={6} direction="row" align="center" py={6}>
-          <Text fontSize="sm">
-            {numActiveTodos} item{numActiveTodos === 1 ? '' : 's'} left
-          </Text>
+      <Stack spacing={6} direction="row" align="center" py={6}>
+        <Text fontSize="sm">
+          {numActiveTodos} item{numActiveTodos === 1 ? '' : 's'} left
+        </Text>
 
-          <HStack spacing={1}>
-            <Button size="xs">All</Button>
-            <Button size="xs">Active</Button>
-            <Button size="xs">Completed</Button>
-          </HStack>
+        <HStack spacing={1}>
+          <Button size="xs" isActive={filter === 'all'}>
+            <a href="#/">All</a>
+          </Button>
+          <Button size="xs" isActive={filter === 'active'}>
+            <a href="#/active">Active</a>
+          </Button>
+          <Button size="xs" isActive={filter === 'completed'}>
+            <a href="#/completed">Completed</a>
+          </Button>
+        </HStack>
+      </Stack>
 
-          {numActiveTodos < todos.length && (
-            <Button size="xs" onClick={(_) => send('CLEAR_COMPLETED')}>
-              Clear completed
-            </Button>
-          )}
-        </Stack>
+      {numActiveTodos < todos.length && (
+        <Button size="xs" onClick={(_) => send('CLEAR_COMPLETED')}>
+          Clear completed
+        </Button>
       )}
 
       <Box py={6}>

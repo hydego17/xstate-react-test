@@ -15,7 +15,7 @@ export function Todo({ todoRef }) {
 
   const inputRef = useRef(null);
 
-  const { id, title, completed } = state.context;
+  const { title, completed } = state.context;
 
   useEffect(() => {
     if (state.actions.find((action) => action.type === 'focusInput')) {
@@ -25,7 +25,7 @@ export function Todo({ todoRef }) {
 
   return (
     <>
-      <Box my={2} py={2}>
+      <Box my={2} py={2} px={4}>
         <Stack
           spacing={5}
           direction="row"
