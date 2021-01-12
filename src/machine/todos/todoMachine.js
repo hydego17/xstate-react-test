@@ -1,6 +1,6 @@
 import { createMachine, assign, sendParent } from 'xstate';
 
-export const createTodoMachine = () =>
+export const createTodoMachine = ({ id, title, completed }) =>
   createMachine(
     {
       id: 'todo',
@@ -15,7 +15,7 @@ export const createTodoMachine = () =>
         TOGGLE_COMPLETE: {
           actions: [
             assign({ completed: true }),
-            sendParent((context) => ({ type: TODO.COMMIT, todo: context })),
+            sendParent((context) => ({ type: 'TODO.COMMIT', todo: context })),
           ],
         },
         DELETE: 'deleted',

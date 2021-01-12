@@ -16,7 +16,7 @@ export const todosMachine = createMachine({
   context: {
     todo: '', // new todo
     todos: [],
-    filter: all,
+    filter: 'all',
   },
   initial: 'loading',
   states: {
@@ -25,7 +25,7 @@ export const todosMachine = createMachine({
         todos: (context) => {
           // "Rehydrate" persisted todos
           return context.todos.map((todo) => ({
-            ...todos,
+            ...todo,
             ref: spawn(createTodoMachine(todo)),
           }));
         },
