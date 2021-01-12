@@ -52,11 +52,11 @@ export default function TodosPage() {
 
   // Filtered todos (to be rendered)
   const filteredTodos = filterTodos(filter, todos);
-  console.log(filteredTodos);
 
   return (
     <PageContainer title="todos">
       <Box py={4} w={400}>
+        {/* Input Todo */}
         <Input
           type="text"
           value={todo}
@@ -81,6 +81,14 @@ export default function TodosPage() {
           <Todo key={todo.id} todoRef={todo.ref} />
         ))}
       </Box>
+
+      {filteredTodos.length > 0 && (
+        <Box py={6}>
+          <Text fontSize="xs" color="gray.600">
+            Click to edit todo
+          </Text>
+        </Box>
+      )}
     </PageContainer>
   );
 }
