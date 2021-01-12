@@ -1,7 +1,7 @@
 import React, { createContext } from 'react';
 import { useMachine } from '@xstate/react';
 
-import { Box, Container, Flex, Heading, Select, Code } from '@chakra-ui/react';
+import { Box, Select, Code } from '@chakra-ui/react';
 
 import { covidMachine } from '../../machine/covid-19/covidMachine';
 import Indicator from './Indicator';
