@@ -11,7 +11,7 @@ import NavLink from './components/NavLink';
 function App() {
   return (
     <>
-      <Container maxW="2xl" textAlign="center">
+      <Container maxW="xl" textAlign="center">
         <Box py={6}>
           <Heading>React XState </Heading>
           <Text>See Example:</Text>
